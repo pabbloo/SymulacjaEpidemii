@@ -7,13 +7,18 @@ public class Virus extends ASpecimen{
 
     public Virus(){
         isAlive=true;
-        lifespan=5000;
+        isInfected=true;
+        lifespan=80;
         this.generateStartingLocation();
     }
 
-    public void infect(){
-        //infekcje chyba mapa robi?
+    public void turn(){
+        if (this.isAlive==true) {
+            this.move();
+            this.die();
+        }
     }
+
 
     public void die(){
         if (LICZNIK>lifespan){
