@@ -2,23 +2,31 @@ package epidemia;
 
 import java.util.Random;
 
-public class AVictim extends ASpecimen{
-    public boolean isInfected;
+public abstract class AVictim extends ASpecimen{
     public int immunity;
-    private int prawdopodobienstwoZgonu=20;
+    private int prawdopodobienstwoZgonu=3;
 
-    protected boolean checkInfection(){
-
-        return isInfected;
+    public void Infect(){
+        isInfected=true;
     }
 
-    protected void tryToDie(){
+    public void tryToDie(){
         Random generator = new Random();
 
         int los = (generator.nextInt(100)+1);
 
         if (los<prawdopodobienstwoZgonu){
             isAlive=false;
+        }
+
+
+    }
+    public void turn() {
+        if (this.isAlive){
+                if (this.isInfected){
+                    this.tryToDie();
+                }
+            this.move();
         }
     }
 }
