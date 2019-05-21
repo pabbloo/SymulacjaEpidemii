@@ -1,6 +1,7 @@
 package epidemia;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import static epidemia.Simulation.*;
 import static java.lang.Math.abs;
@@ -42,6 +43,11 @@ public class Map implements IMap{
                     int q = Integer.parseInt(s);
 
                     if ((ArrSpecimen[j].checkInfection()) || (ArrSpecimen[q].checkInfection())) {
+
+                        Random generator = new Random();
+
+                        int los = generator.nextInt(10);
+
                         ArrSpecimen[j].infect();
                         ArrSpecimen[q].infect();
                     }
