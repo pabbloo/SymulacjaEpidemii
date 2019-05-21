@@ -3,7 +3,9 @@ package epidemia;
 import static epidemia.Simulation.LICZNIK;
 
 public class Virus extends ASpecimen{
-    public int lifespan;
+    private int lifespan;
+
+    public int getImmunity(){return 0;}
 
     public Virus(){
         isAlive=true;
@@ -13,14 +15,14 @@ public class Virus extends ASpecimen{
     }
 
     public void turn(){
-        if (this.isAlive==true) {
+        if (this.isAlive) {
             this.move();
             this.die();
         }
     }
 
 
-    public void die(){
+    private void die(){
         if (LICZNIK>lifespan){
             isAlive=false;
         }

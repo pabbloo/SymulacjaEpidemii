@@ -8,7 +8,7 @@ import static java.lang.Math.abs;
 
 public class Map implements IMap{
     public ISpecimen ArrSpecimen[] = new ISpecimen[POPULACJA];
-    HashMap<Integer,String> lista = new HashMap<Integer,String>();
+    private HashMap<Integer,String> lista = new HashMap<Integer,String>();
 
     private void fillHashMap(){
         lista.clear();
@@ -46,17 +46,17 @@ public class Map implements IMap{
 
                         Random generator = new Random();
 
-                        int los = generator.nextInt(10);
-
-                        ArrSpecimen[j].infect();
-                        ArrSpecimen[q].infect();
+                        int los = generator.nextInt(10)+1;
+                        if (ArrSpecimen[j].getImmunity()<los) ArrSpecimen[j].infect();
+                        los = generator.nextInt(10)+1;
+                        if (ArrSpecimen[q].getImmunity()<los) ArrSpecimen[q].infect();
                     }
                 }
             }
         }
     }
 
-    public String collisionDetection(int i){
+    private String collisionDetection(int i){
 
             String zwrot=null;
 

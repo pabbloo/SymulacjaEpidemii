@@ -9,4 +9,5 @@ public interface ISpecimen {
     public void infect();
     public boolean checkInfection();
     public boolean checkAlive();
+    public int getImmunity();
 }

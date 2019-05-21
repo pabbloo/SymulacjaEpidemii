@@ -2,7 +2,6 @@
 TODO:
  -losowanie gatunkow osobinkow,
  -przyciski w gui.
- -prawdopodobienstwo zarazenia
  */
 
 

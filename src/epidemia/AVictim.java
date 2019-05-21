@@ -3,14 +3,15 @@ package epidemia;
 import java.util.Random;
 
 public abstract class AVictim extends ASpecimen{
-    public int immunity;
+    protected int immunity;
     private int prawdopodobienstwoZgonu=3;
 
     public void Infect(){
         isInfected=true;
     }
+    public int getImmunity(){return immunity;}
 
-    public void tryToDie(){
+    private void tryToDie(){
         Random generator = new Random();
 
         int los = (generator.nextInt(100)+1);
