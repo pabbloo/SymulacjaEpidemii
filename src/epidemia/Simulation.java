@@ -1,17 +1,23 @@
-package epidemia;
+/*
+TODO:
+ -losowanie gatunkow osobinkow,
+ -przyciski w gui.
+ -prawdopodobienstwo zarazenia
+ */
 
+
+package epidemia;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Simulation extends JPanel {
     static final int POPULACJA=6;
-    static int LIMIT=1000;
+    static int LIMIT=100;
     static int LICZNIK=0;
     static int WIELKOSCMAPY=1000;
 
-    static int x0,y0,x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6;
-
+    static int Draw[][]=new int[POPULACJA][3];
 
     @Override
     public void paint(Graphics g) {
@@ -20,22 +26,39 @@ public class Simulation extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2d.setColor(Color.red);
-        g2d.fillOval(x0, y0, 30, 30);
-        g2d.setColor(Color.green);
-        g2d.fillOval(x1, y1, 30, 30);
-        g2d.setColor(Color.green);
-        g2d.fillOval(x2, y2, 30, 30);
-        g2d.setColor(Color.green);
-        g2d.fillOval(x3, y3, 30, 30);
-        g2d.setColor(Color.blue);
-        g2d.fillOval(x4, y4, 30, 30);
-        g2d.setColor(Color.blue);
-        g2d.fillOval(x5, y5, 30, 30);
+        for (int i=0;i<POPULACJA;i++){
+            switch (Draw[i][2]){
+                case 1:
+                    g2d.setColor(Color.red);
+                    break;
+                case 2:
+                    g2d.setColor(Color.blue);
+                    break;
+                case 3:
+                    g2d.setColor(Color.green);
+                    break;
+                case 4:
+                    g2d.setColor((new Color(35, 35, 74)));
+                    break;
+                case 5:
+                    g2d.setColor((new Color(91, 116, 57)));
+                    break;
+                case 6:
+                    g2d.setColor((new Color(0, 0, 0)));
+                    break;
+                case 7:
+                    g2d.setColor((new Color(0, 0, 0)));
+                    break;
+                default:
+                    g2d.setColor(Color.black);
+            }
+            g2d.fillOval(Draw[i][0], Draw[i][1], 30, 30);
+        }
+
 
         g2d.setColor(Color.black);
         g2d.setFont(new Font("Arial", Font.PLAIN, 32));
-        g2d.drawString("H",500,500);
+        g2d.drawString(Integer.toString(LICZNIK),500,500);
     }
 
     public static void run() {
@@ -44,7 +67,7 @@ public class Simulation extends JPanel {
         Simulation sim=new Simulation();
         JFrame frame = new JFrame("Simulation");
         frame.add(sim);
-        frame.setSize(1100, 1100);
+        frame.setSize(WIELKOSCMAPY, WIELKOSCMAPY);
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,29 +76,35 @@ public class Simulation extends JPanel {
 
             //glowna petla
 
-            x0=plansza.ArrSpecimen[0].getXPos();
-            y0=plansza.ArrSpecimen[0].getYPos();
-
-            x1=plansza.ArrSpecimen[1].getXPos();
-            y1=plansza.ArrSpecimen[1].getYPos();
-
-            x2=plansza.ArrSpecimen[2].getXPos();
-            y2=plansza.ArrSpecimen[2].getYPos();
-
-            x3=plansza.ArrSpecimen[3].getXPos();
-            y3=plansza.ArrSpecimen[3].getYPos();
-
-            x4=plansza.ArrSpecimen[4].getXPos();
-            y4=plansza.ArrSpecimen[4].getYPos();
-
-            x5=plansza.ArrSpecimen[5].getXPos();
-            y5=plansza.ArrSpecimen[5].getYPos();
-
             plansza.turn();
+
+            for(int i=0;i<POPULACJA;i++){
+                Draw[i][0]=plansza.ArrSpecimen[i].getXPos();
+                Draw[i][1]=plansza.ArrSpecimen[i].getYPos();
+
+
+
+                if (plansza.ArrSpecimen[i] instanceof Virus) Draw[i][2]=1;
+                else if (plansza.ArrSpecimen[i] instanceof Human) {
+
+                    if (!plansza.ArrSpecimen[i].checkAlive()) Draw[i][2] = 6;
+                    else if (plansza.ArrSpecimen[i].checkInfection()) Draw[i][2] = 4;
+                    else Draw[i][2] = 2;
+                }
+                else if (plansza.ArrSpecimen[i] instanceof Animal) {
+                    if (!plansza.ArrSpecimen[i].checkAlive()) Draw[i][2] = 7;
+                    else if (plansza.ArrSpecimen[i].checkInfection()) Draw[i][2] = 5;
+                    else Draw[i][2] = 3;
+                }
+
+
+            }
+
             frame.repaint();
 
+
             try {
-                Thread.sleep(10);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 break;
             }
