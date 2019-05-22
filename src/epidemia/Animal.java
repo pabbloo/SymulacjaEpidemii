@@ -1,5 +1,7 @@
 package epidemia;
 
+import static epidemia.Simulation.LICZNIK;
+
 public class Animal extends AVictim{
 
     public Animal(){
@@ -7,5 +9,11 @@ public class Animal extends AVictim{
         this.isAlive=true;
         this.isInfected=false;
         this.generateStartingLocation();
+    }
+    public String getType(){return "Animal";}
+
+    public void hospitalContact(){
+        this.isAlive=false;
+        System.out.println(LICZNIK+": Animal has DIED due to HOSPITAL contact.");
     }
 }

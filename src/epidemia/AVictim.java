@@ -23,11 +23,9 @@ public abstract class AVictim extends ASpecimen{
 
     }
     public void turn() {
-        if (this.isAlive){
                 if (this.isInfected){
                     this.tryToDie();
                 }
             this.move();
-        }
     }
 }

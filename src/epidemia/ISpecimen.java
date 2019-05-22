@@ -1,13 +1,15 @@
 package epidemia;
 
 public interface ISpecimen {
-    public void move();
-    public void generateStartingLocation();
-    public int getXPos();
-    public int getYPos();
-    public void turn();
-    public void infect();
-    public boolean checkInfection();
-    public boolean checkAlive();
-    public int getImmunity();
+    void move();
+    void generateStartingLocation();
+    int getXPos();
+    int getYPos();
+    void turn();
+    void infect();
+    boolean checkInfection();
+    boolean checkAlive();
+    int getImmunity();
+    String getType();
+    void hospitalContact();
 }
