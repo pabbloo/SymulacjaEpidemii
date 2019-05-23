@@ -2,6 +2,14 @@
 TODO:
  -IRandomizable
  -przyciski w gui.
+ -testy jednostkowe
+ -automatyczne budowanie
+ -komentarze w kodzie - javadoc?
+
+ KNOWN BUGS:
+ -jak wszyscy zgina to sie zawiesza
+ -jak dwa sie zarazaja to leci log 5->2, 2->5
+
  */
 
 
@@ -14,7 +22,6 @@ public class Simulation extends JPanel {
     static final int POPULACJA=20;
     static final int WIELKOSCMAPY=1000;
     static int LICZNIK=0;
-    static int Draw[][]=new int[POPULACJA+1][3];
 
     private final int LIMIT=100;
 
@@ -27,24 +34,24 @@ public class Simulation extends JPanel {
             plansza.turn();
 
             for(int i=0;i<POPULACJA;i++){
-                Draw[i][0]=plansza.ArrSpecimen[i].getXPos();
-                Draw[i][1]=plansza.ArrSpecimen[i].getYPos();
+                frame.Draw[i][0]=plansza.ArrSpecimen[i].getXPos();
+                frame.Draw[i][1]=plansza.ArrSpecimen[i].getYPos();
 
-                if (plansza.ArrSpecimen[i] instanceof Virus) Draw[i][2]=1;
+                if (plansza.ArrSpecimen[i] instanceof Virus) frame.Draw[i][2]=1;
                 else if (plansza.ArrSpecimen[i] instanceof Human) {
 
-                    if (!plansza.ArrSpecimen[i].checkAlive()) Draw[i][2] = 6;
-                    else if (plansza.ArrSpecimen[i].checkInfection()) Draw[i][2] = 4;
-                    else Draw[i][2] = 2;
+                    if (!plansza.ArrSpecimen[i].checkAlive()) frame.Draw[i][2] = 6;
+                    else if (plansza.ArrSpecimen[i].checkInfection()) frame.Draw[i][2] = 4;
+                    else frame.Draw[i][2] = 2;
                 }
                 else if (plansza.ArrSpecimen[i] instanceof Animal) {
-                    if (!plansza.ArrSpecimen[i].checkAlive()) Draw[i][2] = 7;
-                    else if (plansza.ArrSpecimen[i].checkInfection()) Draw[i][2] = 5;
-                    else Draw[i][2] = 3;
+                    if (!plansza.ArrSpecimen[i].checkAlive()) frame.Draw[i][2] = 7;
+                    else if (plansza.ArrSpecimen[i].checkInfection()) frame.Draw[i][2] = 5;
+                    else frame.Draw[i][2] = 3;
                 }
             }
-            Draw[POPULACJA][0]=plansza.HospitalPos[0];
-            Draw[POPULACJA][1]=plansza.HospitalPos[1];
+            frame.Draw[POPULACJA][0]=plansza.HospitalPos[0];
+            frame.Draw[POPULACJA][1]=plansza.HospitalPos[1];
 
             frame.canvas.repaint();
 
@@ -59,7 +66,6 @@ public class Simulation extends JPanel {
     }
 
     public static void main(String[] args) {
-
         Simulation simulation = new Simulation();
         simulation.run();
     }

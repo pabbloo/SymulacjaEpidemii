@@ -2,6 +2,8 @@ package epidemia;
 
 import java.util.Random;
 
+import static epidemia.Simulation.LICZNIK;
+
 public abstract class AVictim extends ASpecimen{
     protected int immunity;
     private int prawdopodobienstwoZgonu=3;
@@ -18,6 +20,7 @@ public abstract class AVictim extends ASpecimen{
 
         if (los<prawdopodobienstwoZgonu){
             isAlive=false;
+            System.out.println(LICZNIK+": Specimen "+this.getType()+" has DIED due to infection.");
         }
 
 

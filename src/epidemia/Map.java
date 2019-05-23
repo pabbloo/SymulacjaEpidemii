@@ -76,7 +76,7 @@ public class Map implements IMap{
                     if ((ArrSpecimen[j].checkInfection()) || (ArrSpecimen[q].checkInfection())) {
 
                         int los = generator.nextInt(10)+1;
-                        if ((ArrSpecimen[j].getImmunity()<los) && (j!=0)) {
+                        if ((ArrSpecimen[j].getImmunity()<=los) && (j!=0)) {
                             ArrSpecimen[j].infect();
                             System.out.println(LICZNIK+": Specimen "+j+" "+ArrSpecimen[j].getType()+" has been INFECTED by specimen "+q+" "+ArrSpecimen[q].getType()+" with efficiency "+los+", which was more than immunity "+ArrSpecimen[j].getImmunity());
                         }
@@ -84,7 +84,7 @@ public class Map implements IMap{
 
 
                         los = generator.nextInt(10)+1;
-                        if ((ArrSpecimen[q].getImmunity()<los) && (q!=0)) {
+                        if ((ArrSpecimen[q].getImmunity()<=los) && (q!=0)) {
                             ArrSpecimen[q].infect();
                             System.out.println(LICZNIK+": Specimen "+q+" "+ArrSpecimen[q].getType()+" has been INFECTED by specimen "+j+" "+ArrSpecimen[j].getType()+" with efficiency "+los+", which was more than immunity "+ArrSpecimen[q].getImmunity());
                         }

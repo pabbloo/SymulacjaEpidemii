@@ -9,6 +9,7 @@ import static epidemia.Simulation.*;
 
 public class Frame implements ActionListener{
 
+    public int Draw[][]=new int[POPULACJA+1][3];
     JButton jok;
     Panel canvas;
 
@@ -25,7 +26,6 @@ public class Frame implements ActionListener{
 
         canvas = new Panel();
         frame.add(canvas);
-
     }
 
     @Override
