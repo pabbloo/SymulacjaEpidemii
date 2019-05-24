@@ -2,7 +2,7 @@ package epidemia;
 
 import java.util.Random;
 
-import static epidemia.Simulation.WIELKOSCMAPY;
+import static epidemia.Map.WIELKOSCMAPY;
 
 public abstract class ASpecimen implements ISpecimen {
     public int xPos, yPos;

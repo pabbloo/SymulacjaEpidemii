@@ -3,26 +3,23 @@ package epidemia;
 import java.util.HashMap;
 import java.util.Random;
 
-import static epidemia.Simulation.*;
+
+import static epidemia.Simulation.LICZNIK;
 import static java.lang.Math.abs;
 import static java.lang.Math.floor;
 
-public class Map implements IMap{
-
+public class Map {
+    private int POPULACJA;
     private Random generator = new Random();
-    public ISpecimen ArrSpecimen[] = new ISpecimen[POPULACJA];
+    public ISpecimen ArrSpecimen[];
     private HashMap<Integer,String> lista = new HashMap<Integer,String>();
     public int HospitalPos[]=new int[2];
+    static final int WIELKOSCMAPY=1000;
 
-    private void fillHashMap(){
-        lista.clear();
+    public Map(int populacja){
+        POPULACJA=populacja;
 
-        for (int k=0;k<POPULACJA;k++){
-            lista.put(k,"zawartosc"+Integer.toString(k));
-        }
-    }
-
-    public Map(){
+        ArrSpecimen= new ISpecimen[POPULACJA];
 
         ArrSpecimen[0]=new Virus();
 
@@ -52,6 +49,14 @@ public class Map implements IMap{
         System.out.println(LICZNIK+": SIMULATION HAS STARTED");
     }
 
+    private void fillHashMap(){
+        lista.clear();
+
+        for (int k=0;k<POPULACJA;k++){
+            lista.put(k,"zawartosc"+Integer.toString(k));
+        }
+    }
+
     public void turn(){
         fillHashMap();
 
@@ -78,7 +83,7 @@ public class Map implements IMap{
                         int los = generator.nextInt(10)+1;
                         if ((ArrSpecimen[j].getImmunity()<=los) && (j!=0)) {
                             ArrSpecimen[j].infect();
-                            System.out.println(LICZNIK+": Specimen "+j+" "+ArrSpecimen[j].getType()+" has been INFECTED by specimen "+q+" "+ArrSpecimen[q].getType()+" with efficiency "+los+", which was more than immunity "+ArrSpecimen[j].getImmunity());
+                            System.out.println(LICZNIK+": Specimen "+j+" "+ArrSpecimen[j].getType()+" has been INFECTED by specimen "+q+" "+ArrSpecimen[q].getType()+" with efficiency "+los+", which was more or equal immunity "+ArrSpecimen[j].getImmunity());
                         }
                         else if(!ArrSpecimen[j].checkInfection()) System.out.println(LICZNIK+": Specimen "+j+" "+ArrSpecimen[j].getType()+" was IMMUNE at "+q+" "+ArrSpecimen[q].getType()+" contact. Efficiency "+los+" was less than immunity "+ArrSpecimen[j].getImmunity());
 
@@ -86,7 +91,7 @@ public class Map implements IMap{
                         los = generator.nextInt(10)+1;
                         if ((ArrSpecimen[q].getImmunity()<=los) && (q!=0)) {
                             ArrSpecimen[q].infect();
-                            System.out.println(LICZNIK+": Specimen "+q+" "+ArrSpecimen[q].getType()+" has been INFECTED by specimen "+j+" "+ArrSpecimen[j].getType()+" with efficiency "+los+", which was more than immunity "+ArrSpecimen[q].getImmunity());
+                            System.out.println(LICZNIK+": Specimen "+q+" "+ArrSpecimen[q].getType()+" has been INFECTED by specimen "+j+" "+ArrSpecimen[j].getType()+" with efficiency "+los+", which was more or equal immunity "+ArrSpecimen[q].getImmunity());
                         }
                         else if(!ArrSpecimen[q].checkInfection()) System.out.println(LICZNIK+": Specimen "+q+" "+ArrSpecimen[q].getType()+" was IMMUNE at "+j+" "+ArrSpecimen[j].getType()+" contact. Efficiency "+los+" was less than immunity "+ArrSpecimen[q].getImmunity());
                     }

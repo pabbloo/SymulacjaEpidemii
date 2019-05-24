@@ -20,7 +20,7 @@ public abstract class AVictim extends ASpecimen{
 
         if (los<prawdopodobienstwoZgonu){
             isAlive=false;
-            System.out.println(LICZNIK+": Specimen "+this.getType()+" has DIED due to infection.");
+            System.out.println(LICZNIK+": Specimen "+this.getType()+" has DIED due to infection with probability "+los+"<"+prawdopodobienstwoZgonu);
         }
 
 
