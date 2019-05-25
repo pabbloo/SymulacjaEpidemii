@@ -4,7 +4,6 @@ TODO:
  -testy jednostkowe
  -automatyczne budowanie
  -komentarze w kodzie - javadoc?
- -wyswietlanie podsumowania
  -zapis logu do pilku
 
  KNOWN BUGS:
