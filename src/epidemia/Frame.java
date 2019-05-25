@@ -1,9 +1,13 @@
 package epidemia;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import static epidemia.Map.WIELKOSCMAPY;
 import static epidemia.Simulation.LICZNIK;
@@ -12,10 +16,14 @@ public class Frame extends JPanel implements ActionListener{
     private int POPULACJA=20;
     private int Limit=100;
     private int Draw[][];
-    JButton jstart;
-    JLabel lustawienia,lofiar,literacji;
-    JTextField tosobnikow,titeracji;
-    Panel canvas;
+    private int ani=0,dani=0,iani=0,hum=0,dhum=0,ihum=0;
+
+    private JButton bstart;
+    private JLabel lustawienia,lofiar,literacji,lpodsumowanie,lh,ldh,lih,la,lda,lia,lwh,lwdh,lwih,lwa,lwda,lwia;
+    private JTextField tosobnikow,titeracji;
+    private Panel canvas;
+    private BufferedImage human,dhuman,ihuman,animal,danimal,ianimal,virus,dvirus,hospital;
+
 
 
     public Frame() {
@@ -50,16 +58,87 @@ public class Frame extends JPanel implements ActionListener{
         titeracji.setBounds(1180,150,50,20);
 
 
-        jstart = new JButton("START");
-        jstart.setBounds(1030,200,200,50);
-        jstart.addActionListener(this);
+        bstart = new JButton("START");
+        bstart.setBounds(1030,200,200,50);
+        bstart.addActionListener(this);
+
+        lpodsumowanie = new JLabel ("Wyniki symulacji: ");
+        lpodsumowanie.setFont(new Font("Arial", Font.BOLD, 14));
+        lpodsumowanie.setBounds(1030,500,200,20);
+        lpodsumowanie.setVisible(false);
+
+        lh = new JLabel ("Zywych zdrowych ludzi: ");
+        lh.setBounds(1030,520,200,20);
+        lh.setVisible(false);
+
+        lih = new JLabel ("Zarazonych zywych ludzi: ");
+        lih.setBounds(1030,540,200,20);
+        lih.setVisible(false);
+
+        ldh = new JLabel ("Zmarlych ludzi: ");
+        ldh.setBounds(1030,560,200,20);
+        ldh.setVisible(false);
+
+        la = new JLabel ("Zywych zdrowych zwierzat: ");
+        la.setBounds(1030,600,200,20);
+        la.setVisible(false);
+
+        lia = new JLabel ("Zarazonych zywych zwierzat: ");
+        lia.setBounds(1030,620,200,20);
+        lia.setVisible(false);
+
+        lda = new JLabel ("Zmarlych zwirzat: ");
+        lda.setBounds(1030,640,200,20);
+        lda.setVisible(false);
+
+        lwh = new JLabel ("err");
+        lwh.setBounds(1250,520,50,20);
+        lwh.setVisible(false);
+
+        lwih = new JLabel ("err");
+        lwih.setBounds(1250,540,50,20);
+        lwih.setVisible(false);
+
+        lwdh = new JLabel ("err");
+        lwdh.setBounds(1250,560,50,20);
+        lwdh.setVisible(false);
+
+        lwa = new JLabel ("err");
+        lwa.setBounds(1250,600,50,20);
+        lwa.setVisible(false);
+
+        lwia = new JLabel ("err");
+        lwia.setBounds(1250,620,50,20);
+        lwia.setVisible(false);
+
+        lwda = new JLabel ("err");
+        lwda.setBounds(1250,640,50,20);
+        lwda.setVisible(false);
+
+
 
         framee.add(lustawienia);
         framee.add(lofiar);
         framee.add(tosobnikow);
         framee.add(literacji);
         framee.add(titeracji);
-        framee.add(jstart);
+        framee.add(bstart);
+        framee.add(lpodsumowanie);
+
+        framee.add(lh);
+        framee.add(lih);
+        framee.add(ldh);
+        framee.add(la);
+        framee.add(lia);
+        framee.add(lda);
+
+        framee.add(lwh);
+        framee.add(lwih);
+        framee.add(lwdh);
+        framee.add(lwa);
+        framee.add(lwia);
+        framee.add(lwda);
+
 
         canvas = new Panel();
         framee.add(canvas);
@@ -67,11 +146,27 @@ public class Frame extends JPanel implements ActionListener{
         //frame.pack();
         framee.setVisible(true);
 
+        try {
+            human = ImageIO.read(new File("img/human.png"));
+            dhuman = ImageIO.read(new File("img/dhuman.png"));
+            ihuman = ImageIO.read(new File("img/ihuman.png"));
+            animal = ImageIO.read(new File("img/animal.png"));
+            danimal = ImageIO.read(new File("img/danimal.png"));
+            ianimal = ImageIO.read(new File("img/ianimal.png"));
+            virus = ImageIO.read(new File("img/virus.png"));
+            dvirus = ImageIO.read(new File("img/dvirus.png"));
+            hospital = ImageIO.read(new File("img/hospital.png"));
+
+        } catch (IOException e) {
+            System.out.println("Read file error");
+        }
+
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e){
+        bstart.setEnabled(false);
         String s = tosobnikow.getText();
         POPULACJA=Integer.parseInt(s);
         String s2=titeracji.getText();
@@ -84,10 +179,43 @@ public class Frame extends JPanel implements ActionListener{
         new Thread() {
             public void run() {
                 simulation.run(okienko,Limit,POPULACJA);
+
+                int[] podsumowanie = simulation.results();
+                hum=podsumowanie[0];
+                dhum=podsumowanie[1];
+                ihum=podsumowanie[2];
+                ani=podsumowanie[3];
+                dani=podsumowanie[4];
+                iani=podsumowanie[5];
+
+
+                lwh.setText(String.valueOf(hum));
+                lwih.setText(String.valueOf(ihum));
+                lwdh.setText(String.valueOf(dhum));
+                lwa.setText(String.valueOf(ani));
+                lwia.setText(String.valueOf(iani));
+                lwda.setText(String.valueOf(dani));
+
+                lpodsumowanie.setVisible(true);
+
+                lh.setVisible(true);
+                lih.setVisible(true);
+                ldh.setVisible(true);
+                la.setVisible(true);
+                lia.setVisible(true);
+                lda.setVisible(true);
+
+                lwh.setVisible(true);
+                lwih.setVisible(true);
+                lwdh.setVisible(true);
+                lwa.setVisible(true);
+                lwia.setVisible(true);
+                lwda.setVisible(true);
+
+                bstart.setEnabled(true);
             }
         }.start();
 
-        //podsumowanie visible
     }
 
     public void repaint(Map plansza){
@@ -95,7 +223,10 @@ public class Frame extends JPanel implements ActionListener{
             this.Draw[i][0]=plansza.ArrSpecimen[i].getXPos();
             this.Draw[i][1]=plansza.ArrSpecimen[i].getYPos();
 
-            if (plansza.ArrSpecimen[i] instanceof Virus) this.Draw[i][2]=1;
+            if (plansza.ArrSpecimen[i] instanceof Virus) {
+                if (!plansza.ArrSpecimen[i].checkAlive()) this.Draw[i][2]=8;
+                else this.Draw[i][2]=1;
+            }
             else if (plansza.ArrSpecimen[i] instanceof Human) {
 
                 if (!plansza.ArrSpecimen[i].checkAlive()) this.Draw[i][2] = 6;
@@ -129,7 +260,6 @@ public class Frame extends JPanel implements ActionListener{
             super.paint(g);
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
             g2d.setColor(Color.black);
             g2d.drawRect(0, 0, WIELKOSCMAPY - 1, WIELKOSCMAPY - 1);
 
@@ -137,36 +267,34 @@ public class Frame extends JPanel implements ActionListener{
                 for (int i = 0; i < POPULACJA; i++) {
                     switch (Draw[i][2]) {
                         case 1:
-                            g2d.setColor(Color.red);
+                            g2d.drawImage(virus,Draw[i][0],Draw[i][1],null);
                             break;
                         case 2:
-                            g2d.setColor(Color.blue);
+                            g2d.drawImage(human,Draw[i][0],Draw[i][1],null);
                             break;
                         case 3:
-                            g2d.setColor(Color.green);
+                            g2d.drawImage(animal,Draw[i][0],Draw[i][1],null);
                             break;
                         case 4:
-                            g2d.setColor((new Color(35, 35, 74)));
+                            g2d.drawImage(ihuman,Draw[i][0],Draw[i][1],null);
                             break;
                         case 5:
-                            g2d.setColor((new Color(91, 116, 57)));
+                            g2d.drawImage(ianimal,Draw[i][0],Draw[i][1],null);
                             break;
                         case 6:
-                            g2d.setColor((new Color(0, 0, 0)));
+                            g2d.drawImage(dhuman,Draw[i][0],Draw[i][1],null);
                             break;
                         case 7:
-                            g2d.setColor((new Color(0, 0, 0)));
+                            g2d.drawImage(danimal,Draw[i][0],Draw[i][1],null);
+                            break;
+                        case 8:
+                            g2d.drawImage(dvirus,Draw[i][0],Draw[i][1],null);
                             break;
                         default:
                             g2d.setColor(Color.black);
                     }
-                    g2d.fillOval(Draw[i][0], Draw[i][1], 30, 30);
                 }
-
-                g2d.setColor(Color.black);
-                g2d.setFont(new Font("Arial", Font.PLAIN, 28));
-                g2d.drawString("H", Draw[POPULACJA][0] + 5, Draw[POPULACJA][1] + 25);
-                g2d.drawRect(Draw[POPULACJA][0], Draw[POPULACJA][1], 30, 30);
+                g2d.drawImage(hospital,Draw[POPULACJA][0],Draw[POPULACJA][1],null);
             }
         }
     }
