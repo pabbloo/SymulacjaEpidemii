@@ -2,7 +2,7 @@ package epidemia;
 
 import java.util.Random;
 
-import static epidemia.Map.WIELKOSCMAPY;
+import static epidemia.Map.MAPSIZE;
 
 public abstract class ASpecimen implements ISpecimen {
     public int xPos, yPos;
@@ -11,53 +11,54 @@ public abstract class ASpecimen implements ISpecimen {
 
     Random generator = new Random();
 
-    public void infect(){
-        isInfected=true;
+    public void infect() {
+        isInfected = true;
     }
 
-    public boolean checkInfection(){
+    public boolean checkInfection() {
         return isInfected;
     }
 
-    public boolean checkAlive(){
+    public boolean checkAlive() {
         return isAlive;
     }
 
     public void generateStartingLocation() {
-        int los = generator.nextInt(WIELKOSCMAPY);
-        this.xPos=los;
-        los = generator.nextInt(WIELKOSCMAPY);
-        this.yPos=los;
+        int los = generator.nextInt(MAPSIZE);
+        this.xPos = los;
+        los = generator.nextInt(MAPSIZE);
+        this.yPos = los;
     }
 
-    public void move(){
-        int mnoznik=1,pozycja,los;
+    public void move() {
+        int mnoznik = 1, pozycja, los;
 
         do {
             los = generator.nextInt(100);
             if (los > 60) mnoznik = -1;
             los = generator.nextInt(300);
-            pozycja=this.xPos+(los*mnoznik);
+            pozycja = this.xPos + (los * mnoznik);
 
-        }while((pozycja<0) || (pozycja>WIELKOSCMAPY-30));
+        } while ((pozycja < 0) || (pozycja > MAPSIZE - 30));
 
-        this.xPos =pozycja;
+        this.xPos = pozycja;
 
         do {
             los = generator.nextInt(100);
             if (los > 60) mnoznik = -1;
             los = generator.nextInt(300);
-            pozycja=this.yPos+(los*mnoznik);
+            pozycja = this.yPos + (los * mnoznik);
 
-        }while((pozycja<0) || (pozycja>WIELKOSCMAPY-30));
+        } while ((pozycja < 0) || (pozycja > MAPSIZE - 30));
 
-        this.yPos=pozycja;
+        this.yPos = pozycja;
     }
 
-    public int getXPos(){
+    public int getXPos() {
         return this.xPos;
     }
-    public int getYPos(){
+
+    public int getYPos() {
         return this.yPos;
     }
 }

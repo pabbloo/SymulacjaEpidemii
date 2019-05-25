@@ -2,33 +2,36 @@ package epidemia;
 
 import java.util.Random;
 
-import static epidemia.Simulation.LICZNIK;
+import static epidemia.Simulation.DURATION;
 
-public abstract class AVictim extends ASpecimen{
+public abstract class AVictim extends ASpecimen {
     protected int immunity;
-    private int prawdopodobienstwoZgonu=3;
+    private int prawdopodobienstwoZgonu = 3;
 
-    public void Infect(){
-        isInfected=true;
+    public void Infect() {
+        isInfected = true;
     }
-    public int getImmunity(){return immunity;}
 
-    private void tryToDie(){
+    public int getImmunity() {
+        return immunity;
+    }
+
+    private void tryToDie() {
         Random generator = new Random();
 
-        int los = (generator.nextInt(100)+1);
+        int los = (generator.nextInt(100) + 1);
 
-        if (los<prawdopodobienstwoZgonu){
-            isAlive=false;
-            System.out.println(LICZNIK+": Specimen "+this.getType()+" has DIED due to infection with probability "+los+"<"+prawdopodobienstwoZgonu);
+        if (los < prawdopodobienstwoZgonu) {
+            isAlive = false;
+            System.out.println(DURATION + ": Specimen " + this.getType() + " has DIED due to infection with probability " + los + "<" + prawdopodobienstwoZgonu);
         }
 
-
     }
+
     public void turn() {
-                if (this.isInfected){
-                    this.tryToDie();
-                }
-            this.move();
+        if (this.isInfected) {
+            this.tryToDie();
+        }
+        this.move();
     }
 }

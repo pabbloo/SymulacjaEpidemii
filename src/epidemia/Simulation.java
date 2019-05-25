@@ -4,6 +4,7 @@ TODO:
  -testy jednostkowe
  -automatyczne budowanie
  -komentarze w kodzie - javadoc?
+ -wyswietlanie podsumowania
  -zapis logu do pilku
 
  KNOWN BUGS:
@@ -17,47 +18,44 @@ TODO:
 package epidemia;
 
 
-public class Simulation{
-    static int LICZNIK=0;
+public class Simulation {
+    static int DURATION = 0;
     Map plansza;
 
-    public void run(Frame frame,int Limit,int populacja) {
+    public void run(Frame frame, int Limit, int populacja) {
 
-            plansza = new Map(populacja);
+        plansza = new Map(populacja);
 
-            for (LICZNIK=0;LICZNIK<Limit;LICZNIK++) {
+        for (DURATION = 0; DURATION < Limit; DURATION++) {
 
-                plansza.turn();
-                frame.repaint(plansza);
+            plansza.turn();
+            frame.repaint(plansza);
 
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    break;
-                }
-
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                break;
             }
-            System.out.println(LICZNIK + ": SIMULATION HAS ENDED");
+
+        }
+        System.out.println(DURATION + ": SIMULATION HAS ENDED");
     }
 
-    public int[] results(){
+    public int[] results() {
 
-        int ani=0,dani=0,iani=0,hum=0,dhum=0,ihum=0;
+        int ani = 0, dani = 0, iani = 0, hum = 0, dhum = 0, ihum = 0;
 
-        for (int i=0;i<plansza.ArrSpecimen.length;i++){
-            if (plansza.ArrSpecimen[i].getType().equals("Human")){
-                if (plansza.ArrSpecimen[i].checkAlive()){
+        for (int i = 0; i < plansza.ArrSpecimen.length; i++) {
+            if (plansza.ArrSpecimen[i].getType().equals("Human")) {
+                if (plansza.ArrSpecimen[i].checkAlive()) {
                     if (plansza.ArrSpecimen[i].checkInfection()) ihum++;
                     else hum++;
-                }
-                else dhum++;
-            }
-            else if (plansza.ArrSpecimen[i].getType().equals("Animal")){
-                if (plansza.ArrSpecimen[i].checkAlive()){
+                } else dhum++;
+            } else if (plansza.ArrSpecimen[i].getType().equals("Animal")) {
+                if (plansza.ArrSpecimen[i].checkAlive()) {
                     if (plansza.ArrSpecimen[i].checkInfection()) iani++;
                     else ani++;
-                }
-                else dani++;
+                } else dani++;
             }
         }
 
