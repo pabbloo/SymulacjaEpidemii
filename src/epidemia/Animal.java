@@ -16,7 +16,9 @@ public class Animal extends AVictim {
     }
 
     public void hospitalContact() {
-        this.isAlive = false;
-        System.out.println(DURATION + ": Animal has DIED due to HOSPITAL contact.");
+        if (this.isInfected) {
+            this.isAlive = false;
+            System.out.println(DURATION + ": Animal has DIED due to HOSPITAL contact.");
+        }
     }
 }

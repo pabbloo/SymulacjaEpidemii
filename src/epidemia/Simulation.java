@@ -1,21 +1,19 @@
 /*
 TODO:
  -IRandomizable
- -IMap
  -testy jednostkowe
  -automatyczne budowanie
  -komentarze w kodzie - javadoc?
  -zapis logu do pilku
- -lepszy ruch. Moze na podstawie przesuniecia o wektor.
- -collisiondetection przerobic na int
-
 
  */
 
 
 package epidemia;
 
-
+/**
+ * Main class responsible for initializing simulation with the initial conditions
+ */
 public class Simulation {
     static int DURATION = 0;
 
@@ -45,7 +43,7 @@ public class Simulation {
             if(dead==populacja) break;
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 break;
             }

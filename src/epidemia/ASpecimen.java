@@ -34,21 +34,16 @@ public abstract class ASpecimen implements ISpecimen {
         int mnoznik = 1, pozycja, los;
 
         do {
-            los = generator.nextInt(100);
-            if (los > 60) mnoznik = -1;
-            los = generator.nextInt(300);
-            pozycja = this.xPos + (los * mnoznik);
+            los = generator.nextInt(401) - 200;
+            pozycja = this.xPos + los;
 
         } while ((pozycja < 0) || (pozycja > MAPSIZE - 30));
 
         this.xPos = pozycja;
 
         do {
-            los = generator.nextInt(100);
-            if (los > 60) mnoznik = -1;
-            los = generator.nextInt(300);
-            pozycja = this.yPos + (los * mnoznik);
-
+            los = generator.nextInt(401) - 200;
+            pozycja = this.yPos + los;
         } while ((pozycja < 0) || (pozycja > MAPSIZE - 30));
 
         this.yPos = pozycja;

@@ -1,8 +1,8 @@
 package epidemia;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
 
 import static epidemia.Simulation.DURATION;
 import static java.lang.Math.abs;
@@ -17,8 +17,6 @@ public class Map {
     private int population;
     private Random generator = new Random();
     private HashMap<Integer, String> lista = new HashMap<>();
-
-
 
     public Map(int populacja) {
         population = populacja;
@@ -53,6 +51,18 @@ public class Map {
         System.out.println(DURATION + ": SIMULATION HAS STARTED");
     }
 
+
+    private void tryToInfect(int firstObject, int secondObject) {
+        int los = generator.nextInt(10) + 1;
+        if ((!ArrSpecimen[firstObject].checkInfection()) && (ArrSpecimen[secondObject].checkInfection())) {
+            if ((ArrSpecimen[firstObject].getImmunity() <= los) && (firstObject != 0)) {
+                ArrSpecimen[firstObject].infect();
+                System.out.println(DURATION + ": Specimen " + firstObject + " " + ArrSpecimen[firstObject].getType() + " has been INFECTED by specimen " + secondObject + " " + ArrSpecimen[secondObject].getType() + " with efficiency " + los + ", which was more or equal immunity " + ArrSpecimen[firstObject].getImmunity());
+            } else
+                System.out.println(DURATION + ": Specimen " + firstObject + " " + ArrSpecimen[firstObject].getType() + " was IMMUNE at " + secondObject + " " + ArrSpecimen[secondObject].getType() + " contact. Efficiency " + los + " was less than immunity " + ArrSpecimen[firstObject].getImmunity());
+        }
+    }
+
     private void fillHashMap() {
         lista.clear();
 
@@ -74,40 +84,26 @@ public class Map {
                 }
             }
         }
+
         for (int j = 0; j < population; j++) {
 
             if (ArrSpecimen[j].checkAlive()) {
-                String s = collisionDetection(j);
-                if (s != null) {
-
-                    int q = Integer.parseInt(s);
-                    int los;
-                    if ((!ArrSpecimen[j].checkInfection()) && (ArrSpecimen[q].checkInfection())) {
-
-                        los = generator.nextInt(10) + 1;
-                        if ((ArrSpecimen[j].getImmunity() <= los) && (j != 0)) {
-                            ArrSpecimen[j].infect();
-                            System.out.println(DURATION + ": Specimen " + j + " " + ArrSpecimen[j].getType() + " has been INFECTED by specimen " + q + " " + ArrSpecimen[q].getType() + " with efficiency " + los + ", which was more or equal immunity " + ArrSpecimen[j].getImmunity());
-                        } else
-                            System.out.println(DURATION + ": Specimen " + j + " " + ArrSpecimen[j].getType() + " was IMMUNE at " + q + " " + ArrSpecimen[q].getType() + " contact. Efficiency " + los + " was less than immunity " + ArrSpecimen[j].getImmunity());
-                    }
-                    else if ((ArrSpecimen[j].checkInfection()) && (!ArrSpecimen[q].checkInfection())) {
-
-                        los = generator.nextInt(10) + 1;
-                        if ((ArrSpecimen[q].getImmunity() <= los) && (q != 0)) {
-                            ArrSpecimen[q].infect();
-                            System.out.println(DURATION + ": Specimen " + q + " " + ArrSpecimen[q].getType() + " has been INFECTED by specimen " + j + " " + ArrSpecimen[j].getType() + " with efficiency " + los + ", which was more or equal immunity " + ArrSpecimen[q].getImmunity());
-                        } else
-                            System.out.println(DURATION + ": Specimen " + q + " " + ArrSpecimen[q].getType() + " was IMMUNE at " + j + " " + ArrSpecimen[j].getType() + " contact. Efficiency " + los + " was less than immunity " + ArrSpecimen[q].getImmunity());
+                ArrayList<Integer> ID = collisionDetection(j);
+                if (ID != null) {
+                    for (int k = 0; k < ID.size(); k++) {
+                        if (ArrSpecimen[ID.get(k)].checkAlive()) {
+                            tryToInfect(j, ID.get(k));
+                            tryToInfect(ID.get(k), j);
+                        }
                     }
                 }
             }
         }
     }
 
-    private String collisionDetection(int i) {
+    private ArrayList<Integer> collisionDetection(int i) {
 
-        String zwrot = null;
+        ArrayList<Integer> vec = new ArrayList<>();
 
         lista.remove(i);
         for (int j : lista.keySet()) {
@@ -124,12 +120,11 @@ public class Map {
 
             if (((roznicaX < 30) && (roznicaY < 30)) && (i != j)) {
                 System.out.println(DURATION + ": Collision detected. Objects " + i + ", " + j + " (" + x1 + ", " + y1 + "); (" + x2 + ", " + y2 + ")");
-                zwrot = Integer.toString(j);
+                vec.add(j);
             }
 
         }
-
-        return zwrot;
+        return vec;
     }
 }
 
