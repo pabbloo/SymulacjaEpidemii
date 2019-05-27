@@ -6,11 +6,7 @@ import static epidemia.Simulation.DURATION;
 
 public abstract class AVictim extends ASpecimen {
     protected int immunity;
-    private int prawdopodobienstwoZgonu = 3;
-
-    public void Infect() {
-        isInfected = true;
-    }
+    private final int prawdopodobienstwoZgonu = 3;
 
     public int getImmunity() {
         return immunity;

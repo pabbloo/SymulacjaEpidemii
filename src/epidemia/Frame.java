@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import static epidemia.Map.MAPSIZE;
@@ -16,9 +15,11 @@ public class Frame extends JPanel implements ActionListener {
     private int POPULATION = 20;
     private int Limit = 100;
     private int Draw[][];
+    private int iterator=0;
+    private Simulation simulations[]=new Simulation[50];
 
     private JButton bstart;
-    private JLabel lustawienia, lofiar, literacji, lpodsumowanie, lh, ldh, lih, la, lda, lia, lwh, lwdh, lwih, lwa, lwda, lwia;
+    private JLabel lustawienia, lofiar, literacji, lpodsumowanie, lh, ldh, lih, la, lda, lia, lwh, lwdh, lwih, lwa, lwda, lwia,ltur,lwtur;
     private JTextField tosobnikow, titeracji;
     private Panel canvas;
     private BufferedImage human, dhuman, ihuman, animal, danimal, ianimal, virus, dvirus, hospital;
@@ -36,7 +37,7 @@ public class Frame extends JPanel implements ActionListener {
         lustawienia.setBounds(1020, 50, 300, 20);
 
 
-        lofiar = new JLabel("Ilosc osobnikow: ");
+        lofiar = new JLabel("Ilość osobnikow: ");
         lofiar.setFont(new Font("Arial", Font.BOLD, 14));
         lofiar.setBounds(1030, 100, 140, 20);
 
@@ -46,7 +47,7 @@ public class Frame extends JPanel implements ActionListener {
         tosobnikow.setBounds(1180, 100, 50, 20);
 
 
-        literacji = new JLabel("Ilosc iteracji: ");
+        literacji = new JLabel("Ilość iteracji: ");
         literacji.setFont(new Font("Arial", Font.BOLD, 14));
         literacji.setBounds(1030, 150, 140, 20);
 
@@ -65,27 +66,27 @@ public class Frame extends JPanel implements ActionListener {
         lpodsumowanie.setBounds(1030, 500, 200, 20);
         lpodsumowanie.setVisible(false);
 
-        lh = new JLabel("Zywych zdrowych ludzi: ");
+        lh = new JLabel("Żywych zdrowych ludzi: ");
         lh.setBounds(1030, 520, 200, 20);
         lh.setVisible(false);
 
-        lih = new JLabel("Zarazonych zywych ludzi: ");
+        lih = new JLabel("Zarażonych żywych ludzi: ");
         lih.setBounds(1030, 540, 200, 20);
         lih.setVisible(false);
 
-        ldh = new JLabel("Zmarlych ludzi: ");
+        ldh = new JLabel("Zmarłych ludzi: ");
         ldh.setBounds(1030, 560, 200, 20);
         ldh.setVisible(false);
 
-        la = new JLabel("Zywych zdrowych zwierzat: ");
+        la = new JLabel("Żywych zdrowych zwierząt: ");
         la.setBounds(1030, 600, 200, 20);
         la.setVisible(false);
 
-        lia = new JLabel("Zarazonych zywych zwierzat: ");
+        lia = new JLabel("Zarażonych zywych zwierząt: ");
         lia.setBounds(1030, 620, 200, 20);
         lia.setVisible(false);
 
-        lda = new JLabel("Zmarlych zwirzat: ");
+        lda = new JLabel("Zmarłych zwierząt: ");
         lda.setBounds(1030, 640, 200, 20);
         lda.setVisible(false);
 
@@ -113,6 +114,15 @@ public class Frame extends JPanel implements ActionListener {
         lwda.setBounds(1250, 640, 50, 20);
         lwda.setVisible(false);
 
+        ltur = new JLabel("Liczba wykonanych tur: ");
+        ltur.setFont(new Font("Arial", Font.BOLD, 14));
+        ltur.setBounds(1030, 700, 200, 20);
+        ltur.setVisible(false);
+
+        lwtur = new JLabel();
+        lwtur.setFont(new Font("Arial", Font.BOLD, 14));
+        lwtur.setBounds(1240, 700, 200, 20);
+        lwtur.setVisible(false);
 
         framee.add(lustawienia);
         framee.add(lofiar);
@@ -136,6 +146,8 @@ public class Frame extends JPanel implements ActionListener {
         framee.add(lwia);
         framee.add(lwda);
 
+        framee.add(ltur);
+        framee.add(lwtur);
 
         canvas = new Panel();
         framee.add(canvas);
@@ -144,18 +156,6 @@ public class Frame extends JPanel implements ActionListener {
         framee.setVisible(true);
 
         try {
-            /*
-            human = ImageIO.read(new File("src/img/human.png"));
-            dhuman = ImageIO.read(new File("src/img/dhuman.png"));
-            ihuman = ImageIO.read(new File("src/img/ihuman.png"));
-            animal = ImageIO.read(new File("src/img/animal.png"));
-            danimal = ImageIO.read(new File("src/img/danimal.png"));
-            ianimal = ImageIO.read(new File("src/img/ianimal.png"));
-            virus = ImageIO.read(new File("src/img/virus.png"));
-            dvirus = ImageIO.read(new File("src/img/dvirus.png"));
-            hospital = ImageIO.read(new File("src/img/hospital.png"));
-            */
-
 
             human = ImageIO.read(epidemia.Frame.class.getResourceAsStream("/img/human.png"));
             dhuman = ImageIO.read(epidemia.Frame.class.getResourceAsStream("/img/dhuman.png"));
@@ -166,7 +166,6 @@ public class Frame extends JPanel implements ActionListener {
             virus = ImageIO.read(epidemia.Frame.class.getResourceAsStream("/img/virus.png"));
             dvirus = ImageIO.read(epidemia.Frame.class.getResourceAsStream("/img/dvirus.png"));
             hospital = ImageIO.read(epidemia.Frame.class.getResourceAsStream("/img/hospital.png"));
-
 
 
         } catch (IOException e) {
@@ -184,54 +183,75 @@ public class Frame extends JPanel implements ActionListener {
         String s2 = titeracji.getText();
         Limit = Integer.parseInt(s2);
 
-        Draw = new int[POPULATION + 1][3];
-        Simulation simulation = new Simulation();
-        Frame okienko = this;
+        if (POPULATION<=1){
+            JOptionPane.showMessageDialog(null,"Wartość musi być wieksza niż 1","Błąd", JOptionPane.ERROR_MESSAGE);
+            bstart.setEnabled(true);
+        }
+        else if(Limit <=0){
+            JOptionPane.showMessageDialog(null,"Wartość musi być wieksza niż 0","Błąd", JOptionPane.ERROR_MESSAGE);
+            bstart.setEnabled(true);
+        }
+        else {
+            Draw = new int[POPULATION + 1][3];
 
-        new Thread() {
-            public void run() {
-                simulation.run(okienko, Limit, POPULATION);
-
-                int[] podsumowanie = simulation.results();
-                int ani = 0, dani = 0, iani = 0, hum = 0, dhum = 0, ihum = 0;
-                hum = podsumowanie[0];
-                dhum = podsumowanie[1];
-                ihum = podsumowanie[2];
-                ani = podsumowanie[3];
-                dani = podsumowanie[4];
-                iani = podsumowanie[5];
+            simulations[iterator] = new Simulation();
 
 
-                lwh.setText(String.valueOf(hum));
-                lwih.setText(String.valueOf(ihum));
-                lwdh.setText(String.valueOf(dhum));
-                lwa.setText(String.valueOf(ani));
-                lwia.setText(String.valueOf(iani));
-                lwda.setText(String.valueOf(dani));
+            Frame okienko = this;
 
-                lpodsumowanie.setVisible(true);
+            new Thread(() -> {
+                simulations[iterator].run(okienko, Limit, POPULATION);
 
-                lh.setVisible(true);
-                lih.setVisible(true);
-                ldh.setVisible(true);
-                la.setVisible(true);
-                lia.setVisible(true);
-                lda.setVisible(true);
-
-                lwh.setVisible(true);
-                lwih.setVisible(true);
-                lwdh.setVisible(true);
-                lwa.setVisible(true);
-                lwia.setVisible(true);
-                lwda.setVisible(true);
+                showStats();
 
                 bstart.setEnabled(true);
-            }
-        }.start();
+                iterator++;
+            }).start();
+
+        }
+    }
+
+    public void showStats(){
+        int[] podsumowanie = simulations[iterator].stats;
+        int ani, dani, iani, hum, dhum, ihum;
+        hum = podsumowanie[0];
+        dhum = podsumowanie[1];
+        ihum = podsumowanie[2];
+        ani = podsumowanie[3];
+        dani = podsumowanie[4];
+        iani = podsumowanie[5];
+
+
+        lwh.setText(String.valueOf(hum));
+        lwih.setText(String.valueOf(ihum));
+        lwdh.setText(String.valueOf(dhum));
+        lwa.setText(String.valueOf(ani));
+        lwia.setText(String.valueOf(iani));
+        lwda.setText(String.valueOf(dani));
+        lwtur.setText(String.valueOf(DURATION));
+
+        lpodsumowanie.setVisible(true);
+
+        lh.setVisible(true);
+        lih.setVisible(true);
+        ldh.setVisible(true);
+        la.setVisible(true);
+        lia.setVisible(true);
+        lda.setVisible(true);
+
+        lwh.setVisible(true);
+        lwih.setVisible(true);
+        lwdh.setVisible(true);
+        lwa.setVisible(true);
+        lwia.setVisible(true);
+        lwda.setVisible(true);
+
+        ltur.setVisible(true);
+        lwtur.setVisible(true);
 
     }
 
-    public void repaint(Map plansza) {
+    public void refresh(Map plansza) {
         for (int i = 0; i < POPULATION; i++) {
             this.Draw[i][0] = plansza.ArrSpecimen[i].getXPos();
             this.Draw[i][1] = plansza.ArrSpecimen[i].getYPos();
@@ -274,7 +294,7 @@ public class Frame extends JPanel implements ActionListener {
             g2d.setColor(Color.black);
             g2d.drawRect(0, 0, MAPSIZE - 1, MAPSIZE - 1);
 
-            if (DURATION != 0) {
+            if (simulations[iterator] != null) {
                 for (int i = 0; i < POPULATION; i++) {
                     switch (Draw[i][2]) {
                         case 1:

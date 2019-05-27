@@ -5,7 +5,7 @@ import java.util.Random;
 import static epidemia.Map.MAPSIZE;
 
 public abstract class ASpecimen implements ISpecimen {
-    public int xPos, yPos;
+    private int xPos, yPos;
     public boolean isAlive;
     public boolean isInfected;
 

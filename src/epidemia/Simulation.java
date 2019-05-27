@@ -1,16 +1,14 @@
 /*
 TODO:
  -IRandomizable
+ -IMap
  -testy jednostkowe
  -automatyczne budowanie
  -komentarze w kodzie - javadoc?
- -wyswietlanie podsumowania
  -zapis logu do pilku
+ -lepszy ruch. Moze na podstawie przesuniecia o wektor.
+ -collisiondetection przerobic na int
 
- KNOWN BUGS:
- -jak wszyscy zgina to sie zawiesza
- -jak dwa sie zarazaja to leci log 5->2, 2->5
- -chyba sie buguje jak sie uruchomi przyciskiem symulacje pare razy
 
  */
 
@@ -20,7 +18,10 @@ package epidemia;
 
 public class Simulation {
     static int DURATION = 0;
-    Map plansza;
+
+    private Map plansza;
+
+    public int[] stats;
 
     public void run(Frame frame, int Limit, int populacja) {
 
@@ -29,10 +30,22 @@ public class Simulation {
         for (DURATION = 0; DURATION < Limit; DURATION++) {
 
             plansza.turn();
-            frame.repaint(plansza);
+            frame.refresh(plansza);
+            stats=results();
+            frame.showStats();
+
+            int dead=0;
+            for (int i=0;i<populacja;i++){
+
+                if(!plansza.ArrSpecimen[i].checkAlive()){
+                    dead++;
+                }
+            }
+
+            if(dead==populacja) break;
 
             try {
-                Thread.sleep(20);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 break;
             }
@@ -41,7 +54,7 @@ public class Simulation {
         System.out.println(DURATION + ": SIMULATION HAS ENDED");
     }
 
-    public int[] results() {
+    private int[] results() {
 
         int ani = 0, dani = 0, iani = 0, hum = 0, dhum = 0, ihum = 0;
 

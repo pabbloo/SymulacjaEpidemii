@@ -3,7 +3,7 @@ package epidemia;
 import static epidemia.Simulation.DURATION;
 
 public class Virus extends ASpecimen {
-    private int lifespan;
+    private final int lifespan;
 
     public int getImmunity() {
         return 0;
