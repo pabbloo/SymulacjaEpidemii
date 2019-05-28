@@ -215,11 +215,11 @@ public class Frame extends JPanel implements ActionListener {
         int[] podsumowanie = simulations[iterator].stats;
         int ani, dani, iani, hum, dhum, ihum;
         hum = podsumowanie[0];
-        dhum = podsumowanie[1];
-        ihum = podsumowanie[2];
+        ihum = podsumowanie[1];
+        dhum = podsumowanie[2];
         ani = podsumowanie[3];
-        dani = podsumowanie[4];
-        iani = podsumowanie[5];
+        iani = podsumowanie[4];
+        dani = podsumowanie[5];
 
 
         lwh.setText(String.valueOf(hum));
