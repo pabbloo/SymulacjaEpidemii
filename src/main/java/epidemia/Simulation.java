@@ -2,9 +2,7 @@
 TODO:
  -IRandomizable
  -testy jednostkowe
- -komentarze w kodzie - javadoc?
  -zapis logu do pilku
-
  */
 
 package epidemia;
@@ -15,30 +13,37 @@ package epidemia;
 public class Simulation {
     static int DURATION = 0;
 
-    private Map plansza;
+    private Map map;
 
     public int[] stats;
 
-    public void run(Frame frame, int Limit, int populacja) {
+    /**
+     * Initialize the map, contains main loop where turns are coded
+     *
+     * @param frame choose the swing frame in which simulation should be displayed
+     * @param Limit input from user, which defines maximum iteration limit
+     * @param population input from user, how many specimens will program spawn on the map
+     */
+    public void run(Frame frame, int Limit, int population) {
 
-        plansza = new Map(populacja);
+        map = new Map(population);
 
         for (DURATION = 0; DURATION < Limit; DURATION++) {
 
-            plansza.turn();
-            frame.refresh(plansza);
+            map.turn();
+            frame.refresh(map);
             stats=results();
             frame.showStats();
 
             int dead=0;
-            for (int i=0;i<populacja;i++){
+            for (int i=0;i<population;i++){
 
-                if(!plansza.ArrSpecimen[i].checkAlive()){
+                if(!map.ArrSpecimen[i].checkAlive()){
                     dead++;
                 }
             }
 
-            if(dead==populacja) break;
+            if(dead==population) break;
 
             try {
                 Thread.sleep(50);
@@ -54,31 +59,36 @@ public class Simulation {
 
         int ani = 0, dani = 0, iani = 0, hum = 0, dhum = 0, ihum = 0;
 
-        for (int i = 0; i < plansza.ArrSpecimen.length; i++) {
-            if (plansza.ArrSpecimen[i].getType().equals("Human")) {
-                if (plansza.ArrSpecimen[i].checkAlive()) {
-                    if (plansza.ArrSpecimen[i].checkInfection()) ihum++;
+        for (int i = 0; i < map.ArrSpecimen.length; i++) {
+            if (map.ArrSpecimen[i].getType().equals("Human")) {
+                if (map.ArrSpecimen[i].checkAlive()) {
+                    if (map.ArrSpecimen[i].checkInfection()) ihum++;
                     else hum++;
                 } else dhum++;
-            } else if (plansza.ArrSpecimen[i].getType().equals("Animal")) {
-                if (plansza.ArrSpecimen[i].checkAlive()) {
-                    if (plansza.ArrSpecimen[i].checkInfection()) iani++;
+            } else if (map.ArrSpecimen[i].getType().equals("Animal")) {
+                if (map.ArrSpecimen[i].checkAlive()) {
+                    if (map.ArrSpecimen[i].checkInfection()) iani++;
                     else ani++;
                 } else dani++;
             }
         }
 
-        int[] zwrot = new int[6];
-        zwrot[0] = hum;
-        zwrot[1] = ihum;
-        zwrot[2] = dhum;
-        zwrot[3] = ani;
-        zwrot[4] = iani;
-        zwrot[5] = dani;
+        int[] array = new int[6];
+        array[0] = hum;
+        array[1] = ihum;
+        array[2] = dhum;
+        array[3] = ani;
+        array[4] = iani;
+        array[5] = dani;
 
-        return zwrot;
+        return array;
     }
 
+    /**
+     * Initialize main frame
+     *
+     * @param args default main param
+     */
     public static void main(String[] args) {
 
         new Frame();

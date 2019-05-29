@@ -8,10 +8,13 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import static epidemia.Map.MAPSIZE;
+import static epidemia.Map.mapSize;
 import static epidemia.Simulation.DURATION;
 
-public class Frame extends JPanel implements ActionListener {
+/**
+ *Swing JFrame, providing a gui. Is used to enter starting conditions and start the simulation
+ */
+public class Frame extends JFrame implements ActionListener {
     private int POPULATION = 20;
     private int Limit = 100;
     private int Draw[][];
@@ -25,6 +28,9 @@ public class Frame extends JPanel implements ActionListener {
     private BufferedImage human, dhuman, ihuman, animal, danimal, ianimal, virus, dvirus, hospital;
 
 
+    /**
+     * Creates JFrame with labels, buttons and text fields; Load images from resources
+     */
     public Frame() {
         JFrame framee = new JFrame("Epidemia");
 
@@ -152,14 +158,7 @@ public class Frame extends JPanel implements ActionListener {
         canvas = new Panel();
         framee.add(canvas);
 
-        //frame.pack();
         framee.setVisible(true);
-
-        /*try {
-            PrintWriter zapis = new PrintWriter("nazwa_pliku.txt");
-        }catch(IOException e2){
-            System.out.println("XDDDD");
-        }*/
 
         try {
 
@@ -181,6 +180,11 @@ public class Frame extends JPanel implements ActionListener {
     }
 
 
+    /**
+     * Method from actionListener, performs actions after clicking a button
+     *
+     * @param e performed action
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         bstart.setEnabled(false);
@@ -217,15 +221,18 @@ public class Frame extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Method used to show live statistics
+     */
     public void showStats(){
-        int[] podsumowanie = simulations[iterator].stats;
+        int[] summary = simulations[iterator].stats;
         int ani, dani, iani, hum, dhum, ihum;
-        hum = podsumowanie[0];
-        ihum = podsumowanie[1];
-        dhum = podsumowanie[2];
-        ani = podsumowanie[3];
-        iani = podsumowanie[4];
-        dani = podsumowanie[5];
+        hum = summary[0];
+        ihum = summary[1];
+        dhum = summary[2];
+        ani = summary[3];
+        iani = summary[4];
+        dani = summary[5];
 
 
         lwh.setText(String.valueOf(hum));
@@ -257,40 +264,56 @@ public class Frame extends JPanel implements ActionListener {
 
     }
 
-    public void refresh(Map plansza) {
+    /**
+     * Method used to refresh specimens positions on map
+     *
+     * @param map which map should be used to refresh the Frame
+     */
+    public void refresh(Map map) {
         for (int i = 0; i < POPULATION; i++) {
-            this.Draw[i][0] = plansza.ArrSpecimen[i].getXPos();
-            this.Draw[i][1] = plansza.ArrSpecimen[i].getYPos();
+            this.Draw[i][0] = map.ArrSpecimen[i].getXPos();
+            this.Draw[i][1] = map.ArrSpecimen[i].getYPos();
 
-            if (plansza.ArrSpecimen[i] instanceof Virus) {
-                if (!plansza.ArrSpecimen[i].checkAlive()) this.Draw[i][2] = 8;
+            if (map.ArrSpecimen[i] instanceof Virus) {
+                if (!map.ArrSpecimen[i].checkAlive()) this.Draw[i][2] = 8;
                 else this.Draw[i][2] = 1;
-            } else if (plansza.ArrSpecimen[i] instanceof Human) {
+            } else if (map.ArrSpecimen[i] instanceof Human) {
 
-                if (!plansza.ArrSpecimen[i].checkAlive()) this.Draw[i][2] = 6;
-                else if (plansza.ArrSpecimen[i].checkInfection()) this.Draw[i][2] = 4;
+                if (!map.ArrSpecimen[i].checkAlive()) this.Draw[i][2] = 6;
+                else if (map.ArrSpecimen[i].checkInfection()) this.Draw[i][2] = 4;
                 else this.Draw[i][2] = 2;
-            } else if (plansza.ArrSpecimen[i] instanceof Animal) {
-                if (!plansza.ArrSpecimen[i].checkAlive()) this.Draw[i][2] = 7;
-                else if (plansza.ArrSpecimen[i].checkInfection()) this.Draw[i][2] = 5;
+            } else if (map.ArrSpecimen[i] instanceof Animal) {
+                if (!map.ArrSpecimen[i].checkAlive()) this.Draw[i][2] = 7;
+                else if (map.ArrSpecimen[i].checkInfection()) this.Draw[i][2] = 5;
                 else this.Draw[i][2] = 3;
             }
         }
-        this.Draw[POPULATION][0] = plansza.HospitalPos[0];
-        this.Draw[POPULATION][1] = plansza.HospitalPos[1];
+        this.Draw[POPULATION][0] = map.HospitalPos[0];
+        this.Draw[POPULATION][1] = map.HospitalPos[1];
 
         this.canvas.repaint();
 
 
     }
 
+    /**
+     * Swing JPanel, used to paint objects
+     */
     public class Panel extends JPanel {
 
+        /**
+         * Constructor which sets the size to mapSize
+         */
         private Panel() {
-            setBounds(5, 5, MAPSIZE, MAPSIZE);
+            setBounds(5, 5, mapSize, mapSize);
             setBackground(Color.white);
         }
 
+        /**
+         * Method from Swing used to paint the objects on Panel
+         *
+         * @param g magic Parameter
+         */
         @Override
         public void paint(Graphics g) {
 
@@ -298,7 +321,7 @@ public class Frame extends JPanel implements ActionListener {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setColor(Color.black);
-            g2d.drawRect(0, 0, MAPSIZE - 1, MAPSIZE - 1);
+            g2d.drawRect(0, 0, mapSize - 1, mapSize - 1);
 
             if (simulations[iterator] != null) {
                 for (int i = 0; i < POPULATION; i++) {

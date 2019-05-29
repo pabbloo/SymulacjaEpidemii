@@ -1,5 +1,8 @@
 package epidemia;
 
+/**
+ * Interface for specimen
+ */
 public interface ISpecimen {
     void move();
     void generateStartingLocation();

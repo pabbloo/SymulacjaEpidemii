@@ -4,26 +4,38 @@ import java.util.Random;
 
 import static epidemia.Simulation.DURATION;
 
+/**
+ * Abstract class of victim, which is a type of specimen who got infected during the simulation
+ */
 public abstract class AVictim extends ASpecimen {
     protected int immunity;
-    private final int prawdopodobienstwoZgonu = 3;
+    private final int chanceOfDeath = 3;
 
+    /**
+     * @return Integer immunity of current specimen
+     */
     public int getImmunity() {
         return immunity;
     }
 
+    /**
+     * Generates random Integer which is used to determine if victim can die
+     */
     private void tryToDie() {
         Random generator = new Random();
 
         int los = (generator.nextInt(100) + 1);
 
-        if (los < prawdopodobienstwoZgonu) {
+        if (los < chanceOfDeath) {
             isAlive = false;
-            System.out.println(DURATION + ": Specimen " + this.getType() + " has DIED due to infection with probability " + los + "<" + prawdopodobienstwoZgonu);
+            System.out.println(DURATION + ": Specimen " + this.getType() + " has DIED due to infection with probability " + los + "<" + chanceOfDeath);
         }
 
     }
 
+    /**
+     * Method called by Map to perform a specimen's turn
+     */
     public void turn() {
         if (this.isInfected) {
             this.tryToDie();

@@ -8,8 +8,11 @@ import static epidemia.Simulation.DURATION;
 import static java.lang.Math.abs;
 import static java.lang.Math.floor;
 
+/**
+ * Class which contains specimens
+ */
 public class Map {
-    static final int MAPSIZE = 1000;
+    static final int mapSize = 1000;
 
     public int HospitalPos[] = new int[2];
     public ISpecimen ArrSpecimen[];
@@ -18,32 +21,37 @@ public class Map {
     private Random generator = new Random();
     private HashMap<Integer, String> lista = new HashMap<>();
 
-    public Map(int populacja) {
-        population = populacja;
+    /**
+     * Fills map with specimens
+     *
+     * @param population how many specimens will program spawn on the map
+     */
+    public Map(int population) {
+        this.population = population;
 
-        ArrSpecimen = new ISpecimen[population];
+        ArrSpecimen = new ISpecimen[this.population];
 
         ArrSpecimen[0] = new Virus();
 
-        double Dhuman = floor(population * 0.6);
+        double Dhuman = floor(this.population * 0.6);
         int human = (int) Dhuman;
 
         for (int i = 1; i <= human; i++) {
             ArrSpecimen[i] = new Human();
         }
 
-        for (int j = human + 1; j < population; j++) {
+        for (int j = human + 1; j < this.population; j++) {
             ArrSpecimen[j] = new Animal();
         }
 
-        int los = generator.nextInt(MAPSIZE - 30);
+        int los = generator.nextInt(mapSize - 30);
         HospitalPos[0] = los;
-        los = generator.nextInt(MAPSIZE - 30);
+        los = generator.nextInt(mapSize - 30);
         HospitalPos[1] = los;
 
 
-        System.out.println("Created " + population + " specimens: ");
-        for (int k = 0; k < population; k++) {
+        System.out.println("Created " + this.population + " specimens: ");
+        for (int k = 0; k < this.population; k++) {
             System.out.println(k + ". " + ArrSpecimen[k].getType());
         }
         System.out.println("Generated Hospital at: (" + HospitalPos[0] + ", " + HospitalPos[1] + ")");
@@ -52,6 +60,12 @@ public class Map {
     }
 
 
+    /**
+     * Method tries to infect specimens who have collided with each other
+     *
+     * @param firstObject index of the first specimen who collided with another
+     * @param secondObject index of the second specimen who collided with another
+     */
     private void tryToInfect(int firstObject, int secondObject) {
         int los = generator.nextInt(10) + 1;
         if ((!ArrSpecimen[firstObject].checkInfection()) && (ArrSpecimen[secondObject].checkInfection())) {
@@ -63,6 +77,9 @@ public class Map {
         }
     }
 
+    /**
+     * fills HashMap which is used to detect correct collisions
+     */
     private void fillHashMap() {
         lista.clear();
 
@@ -71,6 +88,9 @@ public class Map {
         }
     }
 
+    /**
+     * Method called by main loop; performs basic activity and logic on map
+     */
     public void turn() {
         fillHashMap();
 
@@ -101,6 +121,12 @@ public class Map {
         }
     }
 
+    /**
+     * Method detects if any of specimens had collision
+     *
+     * @param i index of specimen for which we check collisions
+     * @return ArrayList with indexes of specimens who collided with i-specimen
+     */
     private ArrayList<Integer> collisionDetection(int i) {
 
         ArrayList<Integer> vec = new ArrayList<>();
