@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'Pwr'
+version '1.2.0'
+
+sourceCompatibility = 1.8
+
+task Symulacja(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'epidemia.Simulation'
+    }
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

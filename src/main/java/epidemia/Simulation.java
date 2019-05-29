@@ -2,12 +2,10 @@
 TODO:
  -IRandomizable
  -testy jednostkowe
- -automatyczne budowanie
  -komentarze w kodzie - javadoc?
  -zapis logu do pilku
 
  */
-
 
 package epidemia;
 

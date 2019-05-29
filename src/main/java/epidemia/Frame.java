@@ -32,12 +32,12 @@ public class Frame extends JPanel implements ActionListener {
         framee.setSize(1300, 1080);
         framee.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        lustawienia = new JLabel("Ustawienia początkowe symulacji");
+        lustawienia = new JLabel("Ustawienia poczatkowe symulacji");
         lustawienia.setFont(new Font("Arial", Font.BOLD, 16));
         lustawienia.setBounds(1020, 50, 300, 20);
 
 
-        lofiar = new JLabel("Ilość osobnikow: ");
+        lofiar = new JLabel("Ilosc osobnikow: ");
         lofiar.setFont(new Font("Arial", Font.BOLD, 14));
         lofiar.setBounds(1030, 100, 140, 20);
 
@@ -47,7 +47,7 @@ public class Frame extends JPanel implements ActionListener {
         tosobnikow.setBounds(1180, 100, 50, 20);
 
 
-        literacji = new JLabel("Ilość iteracji: ");
+        literacji = new JLabel("Ilosc iteracji: ");
         literacji.setFont(new Font("Arial", Font.BOLD, 14));
         literacji.setBounds(1030, 150, 140, 20);
 
@@ -66,27 +66,27 @@ public class Frame extends JPanel implements ActionListener {
         lpodsumowanie.setBounds(1030, 500, 200, 20);
         lpodsumowanie.setVisible(false);
 
-        lh = new JLabel("Żywych zdrowych ludzi: ");
+        lh = new JLabel("Zywych zdrowych ludzi: ");
         lh.setBounds(1030, 520, 200, 20);
         lh.setVisible(false);
 
-        lih = new JLabel("Zarażonych żywych ludzi: ");
+        lih = new JLabel("Zarazonych zywych ludzi: ");
         lih.setBounds(1030, 540, 200, 20);
         lih.setVisible(false);
 
-        ldh = new JLabel("Zmarłych ludzi: ");
+        ldh = new JLabel("Zmarlych ludzi: ");
         ldh.setBounds(1030, 560, 200, 20);
         ldh.setVisible(false);
 
-        la = new JLabel("Żywych zdrowych zwierząt: ");
+        la = new JLabel("Zywych zdrowych zwierzat: ");
         la.setBounds(1030, 600, 200, 20);
         la.setVisible(false);
 
-        lia = new JLabel("Zarażonych zywych zwierząt: ");
+        lia = new JLabel("Zarazonych zywych zwierzat: ");
         lia.setBounds(1030, 620, 200, 20);
         lia.setVisible(false);
 
-        lda = new JLabel("Zmarłych zwierząt: ");
+        lda = new JLabel("Zmarlych zwierzat: ");
         lda.setBounds(1030, 640, 200, 20);
         lda.setVisible(false);
 
@@ -154,6 +154,12 @@ public class Frame extends JPanel implements ActionListener {
 
         //frame.pack();
         framee.setVisible(true);
+
+        /*try {
+            PrintWriter zapis = new PrintWriter("nazwa_pliku.txt");
+        }catch(IOException e2){
+            System.out.println("XDDDD");
+        }*/
 
         try {
 

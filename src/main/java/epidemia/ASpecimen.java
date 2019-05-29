@@ -31,7 +31,7 @@ public abstract class ASpecimen implements ISpecimen {
     }
 
     public void move() {
-        int mnoznik = 1, pozycja, los;
+        int pozycja, los;
 
         do {
             los = generator.nextInt(401) - 200;
