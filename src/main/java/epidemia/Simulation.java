@@ -1,6 +1,5 @@
 /*
 TODO:
- -IRandomizable
  -testy jednostkowe
  -zapis logu do pilku
  */
@@ -11,6 +10,9 @@ package epidemia;
  * Main class responsible for initializing simulation with the initial conditions
  */
 public class Simulation {
+    /**
+     * Static integer, that contain number of iterations of main loop
+     */
     static int DURATION = 0;
 
     private Map map;

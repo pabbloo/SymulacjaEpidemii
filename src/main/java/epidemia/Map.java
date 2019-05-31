@@ -14,8 +14,16 @@ import static java.lang.Math.floor;
 public class Map {
     static final int mapSize = 1000;
 
+    /**
+     * Stores integer x and integer y as hospital position in array. 0-X, 1=Y
+     */
     public int HospitalPos[] = new int[2];
+
+    /**
+     * Main array with specimens
+     */
     public ISpecimen ArrSpecimen[];
+
 
     private int population;
     private Random generator = new Random();
@@ -84,7 +92,7 @@ public class Map {
         lista.clear();
 
         for (int k = 0; k < population; k++) {
-            lista.put(k, "zawartosc" + Integer.toString(k));
+            lista.put(k, "zawartosc" + k);
         }
     }
 
@@ -110,10 +118,10 @@ public class Map {
             if (ArrSpecimen[j].checkAlive()) {
                 ArrayList<Integer> ID = collisionDetection(j);
                 if (ID != null) {
-                    for (int k = 0; k < ID.size(); k++) {
-                        if (ArrSpecimen[ID.get(k)].checkAlive()) {
-                            tryToInfect(j, ID.get(k));
-                            tryToInfect(ID.get(k), j);
+                    for (int k : ID) {
+                        if (ArrSpecimen[k].checkAlive()) {
+                            tryToInfect(j, k);
+                            tryToInfect(k, j);
                         }
                     }
                 }

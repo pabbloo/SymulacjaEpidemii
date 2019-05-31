@@ -12,7 +12,7 @@ public abstract class ASpecimen implements ISpecimen {
     public boolean isAlive;
     public boolean isInfected;
 
-    Random generator = new Random();
+    private Random generator = new Random();
 
     /**
      * Changes specimen's boolean isInfected to true
