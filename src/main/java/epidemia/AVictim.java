@@ -3,6 +3,7 @@ package epidemia;
 import java.util.Random;
 
 import static epidemia.Simulation.DURATION;
+import static epidemia.Simulation.txt;
 
 /**
  * Abstract class of victim, which is a type of specimen who got infected during the simulation
@@ -28,7 +29,7 @@ public abstract class AVictim extends ASpecimen {
 
         if (los < chanceOfDeath) {
             isAlive = false;
-            System.out.println(DURATION + ": Specimen " + this.getType() + " has DIED due to infection with probability " + los + "<" + chanceOfDeath);
+            txt.println(DURATION + ": Specimen " + this.getType() + " has DIED due to infection with probability " + los + "<" + chanceOfDeath);
         }
 
     }

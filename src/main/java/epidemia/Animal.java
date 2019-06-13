@@ -1,6 +1,7 @@
 package epidemia;
 
 import static epidemia.Simulation.DURATION;
+import static epidemia.Simulation.txt;
 
 /**
  * Type of a Victim with immunity=3; Can be killed in hospital
@@ -30,7 +31,7 @@ public class Animal extends AVictim {
     public void hospitalContact() {
         if (this.isInfected) {
             this.isAlive = false;
-            System.out.println(DURATION + ": Animal has DIED due to HOSPITAL contact.");
+            txt.println(DURATION + ": Animal has DIED due to HOSPITAL contact.");
         }
     }
 }

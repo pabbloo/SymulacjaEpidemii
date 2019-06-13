@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import static epidemia.Simulation.DURATION;
+import static epidemia.Simulation.txt;
 import static java.lang.Math.abs;
 import static java.lang.Math.floor;
 
@@ -57,14 +58,13 @@ public class Map {
         los = generator.nextInt(mapSize - 30);
         HospitalPos[1] = los;
 
-
-        System.out.println("Created " + this.population + " specimens: ");
+        txt.println("Created " + this.population + " specimens: ");
         for (int k = 0; k < this.population; k++) {
-            System.out.println(k + ". " + ArrSpecimen[k].getType());
+            txt.println(k + ". " + ArrSpecimen[k].getType());
         }
-        System.out.println("Generated Hospital at: (" + HospitalPos[0] + ", " + HospitalPos[1] + ")");
-        System.out.println("");
-        System.out.println(DURATION + ": SIMULATION HAS STARTED");
+        txt.println("Generated Hospital at: (" + HospitalPos[0] + ", " + HospitalPos[1] + ")");
+        txt.println("===============================================");
+        txt.println(DURATION + ": SIMULATION HAS STARTED");
     }
 
 
@@ -79,9 +79,9 @@ public class Map {
         if ((!ArrSpecimen[firstObject].checkInfection()) && (ArrSpecimen[secondObject].checkInfection())) {
             if ((ArrSpecimen[firstObject].getImmunity() <= los) && (firstObject != 0)) {
                 ArrSpecimen[firstObject].infect();
-                System.out.println(DURATION + ": Specimen " + firstObject + " " + ArrSpecimen[firstObject].getType() + " has been INFECTED by specimen " + secondObject + " " + ArrSpecimen[secondObject].getType() + " with efficiency " + los + ", which was more or equal immunity " + ArrSpecimen[firstObject].getImmunity());
+                txt.println(DURATION + ": Specimen " + firstObject + " " + ArrSpecimen[firstObject].getType() + " has been INFECTED by specimen " + secondObject + " " + ArrSpecimen[secondObject].getType() + " with efficiency " + los + ", which was more or equal immunity " + ArrSpecimen[firstObject].getImmunity());
             } else
-                System.out.println(DURATION + ": Specimen " + firstObject + " " + ArrSpecimen[firstObject].getType() + " was IMMUNE at " + secondObject + " " + ArrSpecimen[secondObject].getType() + " contact. Efficiency " + los + " was less than immunity " + ArrSpecimen[firstObject].getImmunity());
+                txt.println(DURATION + ": Specimen " + firstObject + " " + ArrSpecimen[firstObject].getType() + " was IMMUNE at " + secondObject + " " + ArrSpecimen[secondObject].getType() + " contact. Efficiency " + los + " was less than immunity " + ArrSpecimen[firstObject].getImmunity());
         }
     }
 
@@ -153,7 +153,7 @@ public class Map {
             roznicaY = abs(y1 - y2);
 
             if (((roznicaX < 30) && (roznicaY < 30)) && (i != j)) {
-                System.out.println(DURATION + ": Collision detected. Objects " + i + ", " + j + " (" + x1 + ", " + y1 + "); (" + x2 + ", " + y2 + ")");
+                txt.println(DURATION + ": Collision detected. Objects " + i + ", " + j + " (" + x1 + ", " + y1 + "); (" + x2 + ", " + y2 + ")");
                 vec.add(j);
             }
 

@@ -5,16 +5,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import static epidemia.Map.mapSize;
 import static epidemia.Simulation.DURATION;
+import static epidemia.Simulation.txt;
 
 /**
  *Swing JFrame, providing a gui. Is used to enter starting conditions and start the simulation
  */
-public class Frame extends JFrame implements ActionListener {
+public class Frame extends JFrame implements ActionListener, WindowListener {
     private int POPULATION = 20;
     private int Limit = 100;
     private int Draw[][];
@@ -22,21 +25,24 @@ public class Frame extends JFrame implements ActionListener {
     private Simulation simulations[]=new Simulation[50];
 
     private JButton bstart;
-    private JLabel lustawienia, lofiar, literacji, lpodsumowanie, lh, ldh, lih, la, lda, lia, lwh, lwdh, lwih, lwa, lwda, lwia,ltur,lwtur;
+    private JLabel lustawienia, lofiar, literacji, lpodsumowanie, lh, ldh, lih, la, lda, lia, lwh, lwdh, lwih, lwa, lwda, lwia,ltur,lwtur,lpodpis;
     private JTextField tosobnikow, titeracji;
     private Panel canvas;
     private BufferedImage human, dhuman, ihuman, animal, danimal, ianimal, virus, dvirus, hospital;
+    private JFrame framee;
 
 
     /**
      * Creates JFrame with labels, buttons and text fields; Load images from resources
      */
     public Frame() {
-        JFrame framee = new JFrame("Epidemia");
+        framee = new JFrame("Epidemia");
 
         framee.setLayout(null);
         framee.setSize(1300, 1080);
-        framee.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        framee.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        framee.addWindowListener(this);
+
 
         lustawienia = new JLabel("Ustawienia poczatkowe symulacji");
         lustawienia.setFont(new Font("Arial", Font.BOLD, 16));
@@ -66,6 +72,11 @@ public class Frame extends JFrame implements ActionListener {
         bstart = new JButton("START");
         bstart.setBounds(1030, 200, 200, 50);
         bstart.addActionListener(this);
+
+        lpodpis = new JLabel("by Pabbloo & Brzychwa");
+        lpodpis.setBounds(1140, 960, 250, 50);
+        lpodpis.setForeground(Color.GRAY);
+
 
         lpodsumowanie = new JLabel("Wyniki symulacji: ");
         lpodsumowanie.setFont(new Font("Arial", Font.BOLD, 14));
@@ -137,6 +148,7 @@ public class Frame extends JFrame implements ActionListener {
         framee.add(titeracji);
         framee.add(bstart);
         framee.add(lpodsumowanie);
+        framee.add(lpodpis);
 
         framee.add(lh);
         framee.add(lih);
@@ -180,6 +192,34 @@ public class Frame extends JFrame implements ActionListener {
     }
 
 
+    public void windowClosed(WindowEvent e) {}
+    public void windowOpened(WindowEvent e) {}
+    public void windowIconified(WindowEvent e) {}
+    public void windowDeiconified(WindowEvent e) {}
+    public void windowActivated(WindowEvent e) {}
+    public void windowDeactivated(WindowEvent e) {}
+    public void windowClosing(WindowEvent e)
+    {
+        exit();
+    }
+
+    /**
+     * Method called when user clicks X to exit.
+     * Prompts confrimation dialog befofe closing the window.
+     * Also closes the results file.
+     */
+    private void exit()
+    {
+        int confirmed = JOptionPane.showConfirmDialog(framee,
+                "Czy napewno chcesz wyjsc?", "Wyjscie", JOptionPane.YES_NO_OPTION);
+
+        if (confirmed == JOptionPane.YES_OPTION)
+        {
+            txt.close();
+            framee.dispose();
+        }
+    }
+
     /**
      * Method from actionListener, performs actions after clicking a button
      *
@@ -204,6 +244,9 @@ public class Frame extends JFrame implements ActionListener {
         else {
             Draw = new int[POPULATION + 1][3];
 
+            txt.println("===============================================");
+            txt.println("Initializng simlation "+iterator);
+            txt.println("===============================================");
             simulations[iterator] = new Simulation();
 
 

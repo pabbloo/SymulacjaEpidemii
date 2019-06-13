@@ -1,10 +1,17 @@
 /*
 TODO:
  -testy jednostkowe
- -zapis logu do pilku
+ -javadoc to pdf
+ -abstract methods
  */
 
 package epidemia;
+
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Main class responsible for initializing simulation with the initial conditions
@@ -14,6 +21,7 @@ public class Simulation {
      * Static integer, that contain number of iterations of main loop
      */
     static int DURATION = 0;
+    static PrintWriter txt;
 
     private Map map;
 
@@ -54,7 +62,19 @@ public class Simulation {
             }
 
         }
-        System.out.println(DURATION + ": SIMULATION HAS ENDED");
+        txt.println(DURATION + ": SIMULATION HAS ENDED");
+        txt.println("===============================================");
+        txt.println("RESULTS");
+        txt.println("Initialized population: "+population);
+        txt.println("Alive healthy people: "+stats[0]);
+        txt.println("Alive infected people: "+stats[1]);
+        txt.println("Dead people: "+stats[2]);
+        txt.println("Alive healthy animals: "+stats[3]);
+        txt.println("Alive infected animals: "+stats[4]);
+        txt.println("Alive animals: "+stats[5]);
+        txt.println("SIMULATION TOOK "+DURATION+" ITERATIONS");
+
+
     }
 
     private int[] results() {
@@ -93,7 +113,21 @@ public class Simulation {
      */
     public static void main(String[] args) {
 
+        LocalDateTime DateObj = LocalDateTime.now();
+        DateTimeFormatter formating = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formated = DateObj.format(formating);
+
+        try {
+            txt = new PrintWriter("results.txt");
+            txt.println("File created on " + formated);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("write error");
+        }
+
+
         new Frame();
+
 
     }
 }

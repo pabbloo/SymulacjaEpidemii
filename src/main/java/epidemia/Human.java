@@ -1,6 +1,7 @@
 package epidemia;
 
 import static epidemia.Simulation.DURATION;
+import static epidemia.Simulation.txt;
 
 /**
  * Type of a Victim with immunity=6; Can be treated at Hospital
@@ -30,7 +31,7 @@ public class Human extends AVictim {
     public void hospitalContact() {
         if (this.isInfected) {
             this.isInfected = false;
-            System.out.println(DURATION + ": Human has been CURED at HOSPITAL!");
+            txt.println(DURATION + ": Human has been CURED at HOSPITAL!");
         }
     }
 }
