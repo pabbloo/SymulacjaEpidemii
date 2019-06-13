@@ -1,8 +1,3 @@
-/*
-TODO:
- -javadoc to pdf
- */
-
 package epidemia;
 
 
