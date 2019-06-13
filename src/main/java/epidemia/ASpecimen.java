@@ -14,6 +14,8 @@ public abstract class ASpecimen implements ISpecimen {
 
     private Random generator = new Random();
 
+    public abstract void turn();
+
     /**
      * Changes specimen's boolean isInfected to true
      */

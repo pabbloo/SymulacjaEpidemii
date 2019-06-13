@@ -1,8 +1,6 @@
 /*
 TODO:
- -testy jednostkowe
  -javadoc to pdf
- -abstract methods
  */
 
 package epidemia;

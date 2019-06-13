@@ -37,6 +37,7 @@ public abstract class AVictim extends ASpecimen {
     /**
      * Method called by Map to perform a specimen's turn
      */
+    @Override
     public void turn() {
         if (this.isInfected) {
             this.tryToDie();

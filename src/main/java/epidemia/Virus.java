@@ -36,6 +36,7 @@ public class Virus extends ASpecimen {
     /**
      * Method called by Map to perform a virus's turn
      */
+    @Override
     public void turn() {
         this.move();
         this.die();
